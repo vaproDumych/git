@@ -1,0 +1,760 @@
+<modification> 
+    <code>Lightning</code> 
+    <name>&lt;a href="../?lightning"target="_blank"&gt;OpenCart Lightning&lt;/a&gt;</name> 
+	<id>OpenCart Lightning</id> 
+	<version>3.33.1</version> 
+	<author><![CDATA[MaxD http://devs.mx]]></author> 
+ 
+    <file path="catalog/controller/checkout/cart.php"> 
+        <operation error="log"> 
+            <search position="before"><![CDATA[ $json['total'] =  ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Wbr')) { global $light_modify_cart; if (!$light_modify_cart) $cht=1; else if (VERSION<"2.0") $cht=$this->getChild('module/cart'); else $cht=$this->load->controller('common/cart'); Wbr($cht); } //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="catalog/controller/error/not_found.php"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ data['continue'] = ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Whz')) Whz("error/not_found"); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="catalog/controller/product/product.php"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ setTitle($this->language->get('text_error' ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Whz')) Whz("product/not_found"); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="catalog/controller/product/category.php"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ setTitle($this->language->get('text_error' ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Whz')) Whz("category/not_found"); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="system/library/cache/file.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ $handle = fopen($files[0], 'r'); ]]></search> 
+            <add position="after"><![CDATA[ if (!$handle || !filesize($files[0])) return false; //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="system/library/cache/file.php"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ if (file_exists($file)) { ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Wcv')) Wcv($file); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="admin/controller/common/developer.php"> 
+        <operation error="skip"> 
+            <search position="replace"><![CDATA[ if (is_dir($directory)) { ]]></search> 
+            <add position="replace"><![CDATA[ if (is_dir($directory) and !glob($directory.'/*')) { ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="catalog/model/journal2/product.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ $products = array_slice($products, 0, $limit); ]]></search> 
+            <add position="after"><![CDATA[ if (function_exists('Wgo')) Wgo($products); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="catalog/model/journal3/product.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ $product_ids = $this->getProductIds(explode(',', Arr::get($this->request->cookie ]]></search> 
+            <add position="after"><![CDATA[ if (function_exists('Wgo')) Wgo($product_ids); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="catalog/model/journal3/product.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ $product_ids = $this->getProductIds($recently_viewed) ]]></search> 
+            <add position="after"><![CDATA[ if (function_exists('Wgo')) Wgo($product_ids); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="system/library/journal3.php"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ return uniqid($prefix); ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Wgo')) { static $id; return $prefix.$id++; } //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="system/library/journal3.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ public function isAdmin() { ]]></search> 
+            <add position="after"><![CDATA[ if (function_exists('Wgt') and Wgt()) return false; //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="catalog/controller/product/category.php"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ $data['pagination'] = ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Wgh')) Wgh($category_info); //Lightning ]]></add> 
+        </operation> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ $data['sort'] = $sort; ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Wgh')) Wgh($category_info, $limit); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="catalog/controller/product/product.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ function index() { ]]></search> 
+            <add position="after"><![CDATA[ if (function_exists('Wga')) Wga(); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="system/library/cart/cart.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ function getProducts() {  ]]></search> 
+            <add position="after"><![CDATA[ global $li_cpr; if ($li_cpr) return $li_cpr; //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="system/library/cart/cart.php"> 
+        <operation error="skip"> 
+            <search position="replace"><![CDATA[ if ($this->customer->getId()) ]]></search> 
+            <add position="replace"><![CDATA[ if ($this->customer->getId() and !defined("Wfd")) ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="catalog/controller/common/cart.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ function index  ]]></search> 
+            <add position="after"><![CDATA[ if (function_exists('Wal')) {global $li_cpr; $li_cpr = $this->cart->getProducts();} //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/engine/loader.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ $controller = new $class($this->registry); ]]></search> 
+            <add position="after"><![CDATA[ if (function_exists('Wfa')) Wfa($route, $data); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/engine/action.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ function __construct($route) { ]]></search> 
+            <add position="after"><![CDATA[ $this->lid = $route; //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/engine/action.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ function execute($registry, array $args = array()) { ]]></search> 
+            <add position="after"><![CDATA[ if (function_exists('Wfa')) { $p = Wfa($this->route, $args); if ($r = Wfv()) return $r;}//Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/engine/action.php"> 
+        <operation error="skip"> 
+            <search position="replace"><![CDATA[ return call_user_func_array ]]></search> 
+            <add position="replace"><![CDATA[ $r = call_user_func_array ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/engine/action.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ $r = call_user_func_array ]]></search> 
+            <add position="after"><![CDATA[ if (function_exists('Wfw')) Wfw($this->route, $p, $r); return $r; ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/engine/action.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ function __construct($route, $args = array()) { ]]></search> 
+            <add position="after"><![CDATA[ if (function_exists('Wfa')) Wfa($route, $args); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="catalog/controller/startup/event.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ function index() { ]]></search> 
+            <add position="after"><![CDATA[ if (!empty($this->event->cache)) { $this->event->trigger("model/setting/event/getEvents/after"); return; } //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/library/config.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ function has($key) { ]]></search> 
+            <add position="after"><![CDATA[ if (function_exists('Wfc')) Wfc($key); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/engine/loader.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ trigger('model/' . $trigger . '/before' ]]></search> 
+            <add position="after"><![CDATA[ if (!$result && function_exists('Wfn')) if (($output = Wfn($route, $args)) === -1) { unset($output);} if (!isset($output)) //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/engine/loader.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ trigger('model/' . $route . '/before' ]]></search> 
+            <add position="after"><![CDATA[ if (isset($registry) && !$result && function_exists('Wfn')) if (($res = Wfn($route, $args)) !== -1) { return $res; } //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/engine/loader.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ $output = call_user_func_array($callable, $args); ]]></search> 
+            <add position="after"><![CDATA[ if (function_exists('Wfn')) Wfn($route, $args, $output); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/library/url.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ function link( ]]></search> 
+            <add position="after"><![CDATA[ if (function_exists('Wci')) { Wf_($route, $args); $r = Wci($lpr = Wfm(func_get_args())); if ($r!==-1) {if (function_exists('Wah')) Wah($route, $r); return $r;}}  //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/library/url.php"> 
+        <operation error="skip"> 
+            <search position="replace"><![CDATA[ return $this->rewrite($url); ]]></search> 
+            <add position="replace"><![CDATA[  $url = $this->rewrite($url); 
+                            return $url; ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/library/url.php"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ return $url ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Wah') and !empty($lpr)) { Wah($route, $url); Wci($lpr, $url);} //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/engine/controller.php"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ return $this->output;  ]]></search> 
+            <add position="before"><![CDATA[ static $li_lock; if (function_exists('Wbo') and !$li_lock) { $li_lock = 1; while ($c=Wbo($this->template, $this->output)) $this->output .= $this->getChild($c); $li_lock = 0; } //Lightning ]]></add> 
+        </operation> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ function getChild  ]]></search> 
+            <add position="before"><![CDATA[ function getChildHtml($child,$args) { return $this->getChild($child,$args); } //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/engine/action.php"> 
+        <operation error="log"> 
+            <search position="before"><![CDATA[ class Action ]]></search> 
+            <add position="before"><![CDATA[ if (file_exists($li = DIR_APPLICATION.'controller/extension/lightning/gamma.php')) require_once($li); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/library/session.php"> 
+        <operation error="log"> 
+            <search position="after"><![CDATA[ $this->data = ]]></search> 
+            <add position="after"><![CDATA[ if (function_exists('Wfb')) Wfb($this->data); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/library/session.php"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ session_set_save_handler( ]]></search> 
+            <add position="before"><![CDATA[ if (!session_id()) //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/engine/registry.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ function set( ]]></search> 
+            <add position="after"><![CDATA[ global $registry; if ($key != 'db') $registry = $this; //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="catalog/model/tool/image.php"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ request->server['HTTPS'] ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Waq')) if (!empty($image_new)) Waq($image_new); elseif (!empty($new_image)) Waq($new_image); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/library/image.php"> 
+        <operation error="skip"> 
+            <search position="replace"><![CDATA[ imagejpeg($this->image, $file, $quality); ]]></search> 
+            <add position="replace"><![CDATA[ imagejpeg($this->image, $file, 85); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/library/image.php"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ imagedestroy($this->image); ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Who')) Who($this->image, $file); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="catalog/model/module/labelmaker.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ $LabelMaker->save($new_image); ]]></search> 
+            <add position="after"><![CDATA[ if (function_exists('Waq')) Waq($new_image); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+	 
+    <file path="admin/model/localisation/currency.php"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ $curl = curl_init(); ]]></search> 
+            <add position="before"><![CDATA[ if (isset($query) and !$query->rows) return; //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="admin/controller/common/header.php"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ $data['description'] = ]]></search> 
+            <add position="before"><![CDATA[ if (defined('DIR_CATALOG')) { $data['show_lightning'] = $this->user->hasPermission('modify', 'setting/setting'); if( $data['no_lightning'] = !is_file(DIR_CATALOG.'controller/extension/lightning/gamma.php')) $data['show_lightning'] = 0; } //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="admin/controller/common/header.php"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ $this->data['description'] = ]]></search> 
+            <add position="before"><![CDATA[ if (defined('DIR_CATALOG')) { $this->data['show_lightning'] = $this->user->hasPermission('modify', 'setting/setting'); if( $this->data['no_lightning'] = !is_file(DIR_CATALOG.'controller/extension/lightning/gamma.php')) $this->data['show_lightning'] = 0; } //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="admin/view/template/common/header.twig"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ <ul class="nav navbar-nav navbar-right"> ]]></search> 
+            <add position="before"><![CDATA[ <!-lightning-> ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="admin/view/template/common/header.twig"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ <li class="nav-item dropdown"> ]]></search> 
+            <add position="before"><![CDATA[ <!-lightning-> ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="admin/view/template/common/header.twig"> 
+        <operation error="skip"> 
+            <search position="replace"><![CDATA[ <!-lightning-> ]]></search> 
+            <add position="replace"><![CDATA[ {% if show_lightning %}<ul class="nav pull-left"><!-light-><style type="text/css"> #lightning_container { margin-top: 18px !important; padding-left: 16px !important; } </style></ul> {% endif %}{% if no_lightning %}<a href="https://lightning.devs.mx/lightning-files-missing-message" target="_blank" style="color:red; text-decoration: underline; padding: 10px">OpenCart Lightning files missing!</a>{% endif %} ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="admin/view/template/common/header.tpl"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ <head ]]></search> 
+            <add position="before"><![CDATA[ 
+            <?php global $os; if ($os) $text_help = '' ?> 
+            ]]></add> 
+        </operation> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ <ul class="nav pull-right"> ]]></search> 
+            <add position="before"><![CDATA[ <ul class="nav pull-left"><!-lightning-><style type="text/css"> #lightning_container { margin-top: 11px !important; margin-right: 20px; } </style></ul> ]]></add> 
+        </operation> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ <div class="div3"> ]]></search> 
+            <add position="before"><![CDATA[ <style type="text/css"> #lightning { display: inline-block; list-style: none; padding-top: 12px; padding-left: 48px; } </style><!-lightning-> ]]></add> 
+        </operation> 
+        <operation error="skip"> 
+            <search position="before" offset="1"><![CDATA[ <a class="dropdown-stores tooltip" ]]></search> 
+            <add position="before" offset="1"><![CDATA[ <div class="div2"><!-lightning-></div> ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="admin/view/template/common/header.tpl"> 
+        <operation error="skip"> 
+            <search position="replace"><![CDATA[ <!-lightning-> ]]></search> 
+            <add position="replace"><![CDATA[ <?php if ($show_lightning) { ?><!-light-><?php } ?><?php if ($no_lightning) { ?><a href="https://lightning.devs.mx/lightning-files-missing-message" target="_blank" style="color:red; text-decoration: underline; padding: 10px">OpenCart Lightning files missing!</a><?php } ?> ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="admin/view/template/common/header.tpl"> 
+        <operation error="skip"> 
+            <search position="replace"><![CDATA[ <!-light-> ]]></search> 
+            <add position="replace"><![CDATA[ 
+             <link rel="stylesheet" type="text/css" href="//lightning.devs.mx/service/css/tetha3.css?v=6" /> 
+ 
+              <li id="lightning"></li> 
+              <iframe id="lightning_popup"></iframe> 
+              <script type="text/javascript"> 
+ 
+                  var lu = true; 
+                  var lv = true; 
+                  var lt = false; 
+ 
+                  function Upp(url) { 
+                        $('#lightning_popup').attr('src', url); 
+                        $('#lightning_popup').fadeIn(500); 
+                    } 
+ 
+                    window.addEventListener("message", function(event) 
+                    { 
+                        if (event.data !== "close_li_frame")  return; 
+                        $('#lightning_popup').attr('src', ''); 
+                        $('#lightning_popup').hide(); 
+                        window.focus(); 
+                    }, false); 
+ 
+                  function Ul() { 
+                      if (!lu) return; 
+                      if (!lv) return; 
+                      lu = false; 
+                      $.get('../index.php?li_op=t&rd='+Date.now(),false, function(data) { 
+                          if (data.indexOf("lightning_menu")==-1) 
+                                $('#lightning').html("Go to <strong>Extensions</strong> -> <strong>Modifications</strong> and press <strong>Refresh</strong>"); 
+                          else { 
+                           $('#lightning').html(data); 
+                          } 
+                      },"html").done(function() { lu = true; }); 
+                  } 
+ 
+                  function li_live() { 
+                    $(".li_logos").css("-webkit-filter", "brightness(100%)"); 
+                    $(".li_req" ).each(function(index) { 
+                      var live = $(this).hasClass("li_req_live"); 
+                      var time = $(this).find(".li_live_time"); 
+                      var t = +time.html(); 
+                      t = parseFloat(t + 0.1); 
+ 
+                      if (t>0) 
+                         $(this).find(".li_req_bar").css("width", 40*t); 
+                      else if (t<0 && !live) { 
+                        $(this).css("margin-left", ((5+t)*10)+"px"); 
+                      } 
+                      if (t==0) 
+                       if (live) $(this).show(); 
+                       else { 
+                         $(this).css("background", "none").css("border", "none"); 
+                         $(this).find(".li_req_on").remove(); 
+                         $(this).find(".li_req_bar").remove(); 
+                         $(this).animate({height:0, padding:0, margin:0},300); 
+                         return; 
+                       } 
+                      var ft = +$(this).find(".li_time").html(); 
+                      if (ft && t>=ft) { 
+                        t = -5; 
+                        $(this).removeClass("li_req_live"); 
+                        $(this).find(".li_req_bar").css("width", 40*ft); 
+                        if (!$("#li_percent").length) { 
+                            $(".lightning_bar strong").html(ft + " sec"); 
+                            var width = 190 / 5 * ft + 10; 
+                            if (width>200) width = 200; 
+                            var color = "#9e3c3c"; 
+                            if (ft<2) color = "#3065b5"; 
+                            else if (ft<4) color = "#82701b"; 
+                            $("#li_bar").css("width", width + "px").css("background-color", color); 
+                            $(".li_logos").css("-webkit-filter", "brightness(120%)"); 
+                        } 
+                      } 
+                      time.html(t.toFixed(1)); 
+                    }); 
+                  } 
+ 
+                  $(document).ready(function(){ 
+                      setInterval('Ul()', 5000); 
+                      Ul(); 
+                      setInterval('li_live()', 100); 
+                      li_live(); 
+                      if (window.location.href.indexOf("route=catalog/product/") > -1) $('button[type=\'submit\']').off('click'); 
+                  }); 
+ 
+                  $(window).focus(function() { 
+                        lv = true; 
+                        Ul(); 
+                    }); 
+ 
+                    $(window).blur(function() { 
+                        lv = false; 
+                    }); 
+ 
+                    var li_genx = false; 
+ 
+                    function li_gen() { 
+                        li_genx = true; 
+                        $.get('../index.php?li_op=gen&cd='+Date.now(),false, function(data) { 
+                                  if (!data) { 
+                                    $('#li_percent').html(100); 
+                                    $('#li_bar').css('width','200px'); 
+                                    li_genx = false; 
+                                    return; 
+                                  } 
+                                  if (typeof data['width'] !== 'undefined') { 
+                                    $('#li_bar').css('width', data['width']); 
+                                    $('#li_percent').html(data['percent']); 
+                                  } 
+                                  $('#li_pages').html(data['pages']); 
+                                  $('#li_psize').html(data['psize']); 
+                                  li_gen(); 
+                              }, 'json').fail(function() {li_genx = false;}); 
+                    } 
+              </script> 
+    ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="admin/view/template/common/header.twig"> 
+        <operation error="log"> 
+            <search position="replace"><![CDATA[ <!-light-> ]]></search> 
+            <add position="replace"><![CDATA[ 
+             <link rel="stylesheet" type="text/css" href="//lightning.devs.mx/service/css/tetha3.css?v=6" /> 
+ 
+              <li id="lightning" style="position: absolute; z-index: 100"></li> 
+              <iframe id="lightning_popup"></iframe> 
+              <script type="text/javascript"> 
+ 
+                  var lu = true; 
+                  var lv = true; 
+                  var lt = false; 
+ 
+                  function Upp(url) { 
+                        $('#lightning_popup').attr('src', url); 
+                        $('#lightning_popup').fadeIn(500); 
+                    } 
+ 
+                    window.addEventListener("message", function(event) 
+                    { 
+                        if (event.data !== "close_li_frame")  return; 
+                        $('#lightning_popup').attr('src', ''); 
+                        $('#lightning_popup').hide(); 
+                        window.focus(); 
+                    }, false); 
+ 
+                  function Ul() { 
+                      if (!lu) return; 
+                      if (!lv) return; 
+                      lu = false; 
+                      $.get('../index.php?li_op=t&rd='+Date.now(),false, function(data) { 
+                          if (data.indexOf("lightning_menu")==-1) 
+                                $('#lightning').html("Go to <strong>Extensions</strong> -> <strong>Modifications</strong> and press <strong>Refresh</strong>"); 
+                          else { 
+                           $('#lightning').html(data); 
+                          } 
+                      },"html").done(function() { lu = true; }); 
+                  } 
+ 
+                  function li_live() { 
+                    $(".li_logos").css("-webkit-filter", "brightness(100%)"); 
+                    $(".li_req" ).each(function(index) { 
+                      var live = $(this).hasClass("li_req_live"); 
+                      var time = $(this).find(".li_live_time"); 
+                      var t = +time.html(); 
+                      t = parseFloat(t + 0.1); 
+ 
+                      if (t>0) 
+                         $(this).find(".li_req_bar").css("width", 40*t); 
+                      else if (t<0 && !live) { 
+                        $(this).css("margin-left", ((5+t)*10)+"px"); 
+                      } 
+                      if (t==0) 
+                       if (live) $(this).show(); 
+                       else { 
+                         $(this).css("background", "none").css("border", "none"); 
+                         $(this).find(".li_req_on").remove(); 
+                         $(this).find(".li_req_bar").remove(); 
+                         $(this).animate({height:0, padding:0, margin:0},300); 
+                         return; 
+                       } 
+                      var ft = +$(this).find(".li_time").html(); 
+                      if (ft && t>=ft) { 
+                        t = -5; 
+                        $(this).removeClass("li_req_live"); 
+                        $(this).find(".li_req_bar").css("width", 40*ft); 
+                        if (!$("#li_percent").length) { 
+                            $(".lightning_bar strong").html(ft + " sec"); 
+                            var width = 190 / 5 * ft + 10; 
+                            if (width>200) width = 200; 
+                            var color = "#9e3c3c"; 
+                            if (ft<2) color = "#3065b5"; 
+                            else if (ft<4) color = "#82701b"; 
+                            $("#li_bar").css("width", width + "px").css("background-color", color); 
+                            $(".li_logos").css("-webkit-filter", "brightness(120%)"); 
+                        } 
+                      } 
+                      time.html(t.toFixed(1)); 
+                    }); 
+                  } 
+ 
+                  $(document).ready(function(){ 
+                      setInterval('Ul()', 5000); 
+                      Ul(); 
+                      setInterval('li_live()', 100); 
+                      li_live(); 
+                      if (window.location.href.indexOf("route=catalog/product/") > -1) $('button[type=\'submit\']').off('click'); 
+                  }); 
+ 
+                  $(window).focus(function() { 
+                        lv = true; 
+                        Ul(); 
+                    }); 
+ 
+                    $(window).blur(function() { 
+                        lv = false; 
+                    }); 
+ 
+                    var li_genx = false; 
+ 
+                    function li_gen() { 
+                        li_genx = true; 
+                        $.get('../index.php?li_op=gen&cd='+Date.now(),false, function(data) { 
+                                  if (!data) { 
+                                    $('#li_percent').html(100); 
+                                    $('#li_bar').css('width','200px'); 
+                                    li_genx = false; 
+                                    return; 
+                                  } 
+                                  if (typeof data['width'] !== 'undefined') { 
+                                    $('#li_bar').css('width', data['width']); 
+                                    $('#li_percent').html(data['percent']); 
+                                  } 
+                                  $('#li_pages').html(data['pages']); 
+                                  $('#li_psize').html(data['psize']); 
+                                  li_gen(); 
+                              }, 'json').fail(function() {li_genx = false;}); 
+                    } 
+              </script> 
+    ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="catalog/model/tool/online.php"> 
+        <operation error="log"> 
+            <search position="after"><![CDATA[ line( ]]></search> 
+            <add  position="after"><![CDATA[ if (function_exists('Wbt') and Wbt()) return; // Lightning  ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/engine/front.php"> 
+        <operation error="log"> 
+            <search position="before"><![CDATA[ while ($action ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Wal')) Wal(); // Lightning  ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="system/engine/router.php"> 
+        <operation error="log"> 
+            <search position="before"><![CDATA[ while ($action ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Wal')) Wal(); // Lightning  ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/library/db*.php"> 
+        <operation error="log"> 
+            <search position="before"><![CDATA[ class D ]]></search> 
+            <add position="before"><![CDATA[ if (defined("LIGHT_ENABLED") or (!defined("LIGHT_FRONTEND") and !file_exists(DIR_LOGS.'cv'))) {if (defined('DIR_CATALOG')) $b = DIR_CATALOG; else $b = DIR_APPLICATION; $b .= 'controller/extension/lightning/beta.php'; if (file_exists($b)) require_once $b;} // Lightning ]]></add> 
+        </operation> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ _construct ]]></search> 
+            <add position="after"><![CDATA[ global $db; $db = $this; if (function_exists('Wbu')) { $this->db = Wbu(); $this->adaptor = $this->db; $this->driver = $this->db; return; } // Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/library/config.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ function set($key, $value) { ]]></search> 
+            <add position="after"><![CDATA[  if (function_exists('Wds')) Wds($key, $value); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/engine/loader.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ function view(  ]]></search> 
+            <add position="after"><![CDATA[ $li_view = 1; //Lightning]]></add> 
+        </operation> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ return $output;  ]]></search> 
+            <add position="before"><![CDATA[ if (isset($li_view) && function_exists('Wbo')) { if (empty($route)) $route = $template; Wbo($route, $output);}  //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="catalog/model/account/wishlist.php"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ return $query->row['total'];  ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Weh') and ($r=Weh($query->row['total']))) return $r; //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="system/library/cart/customer.php"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ if (isset($this->session->data['customer_id']))  ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Wbn') and ($t=Wbn())) { 
+			$this->customer_id = $t["customer_id"]; 
+			$this->firstname = $t["firstname"]; 
+			$this->lastname = $t["lastname"]; 
+			$this->email = $t["email"]; 
+			$this->customer_group_id = 0; 
+		} else ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="system/library/customer.php"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ if (isset($this->session->data['customer_id']))  ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Wbn') and ($t=Wbn())) { 
+			$this->customer_id = $t["customer_id"]; 
+			$this->firstname = $t["firstname"]; 
+			$this->lastname = $t["lastname"]; 
+			$this->email = $t["email"]; 
+			$this->customer_group_id = 0; 
+		} else ]]></add> 
+        </operation> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ $this->session->data['customer_id'] = $customer_query->row['customer_id'];  ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Wbs')) Wbs($customer_query->row); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file error="skip" path="system/library/cart/customer.php"> 
+        <operation error="skip"> 
+            <search position="before"><![CDATA[ $this->session->data['customer_id'] = $customer_query->row['customer_id'];  ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Wbs')) Wbs($customer_query->row); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/library/response.php"> 
+        <operation error="log"> 
+            <search position="before"><![CDATA[ echo $ou  ]]></search> 
+            <add position="before"><![CDATA[ if (function_exists('Wt')) if (Wt()) return; //Lightning]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/library/response.php"> 
+        <operation error="log"> 
+            <search position="before"><![CDATA[ $this->level = $level;  ]]></search> 
+            <add position="before"><![CDATA[ global $light_ob; if (!$light_ob) //Lightning]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="system/library/request.php"> 
+        <operation error="skip"> 
+            <search position="after"><![CDATA[ $this->server =  ]]></search> 
+            <add position="after"><![CDATA[ if (isset($this->server["REQUEST_METHOD"]) && $this->server["REQUEST_METHOD"] == "POST" && isset($this->get["route"]) && defined('HTTP_CATALOG') && function_exists('Wco')) Wco($this->get["route"]); //Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="catalog/model/catalog/product.php"> 
+        <operation error="skip"> 
+            <search position="replace"><![CDATA[ public function getTotalProducts($data = array()) { ]]></search> 
+            <add position="replace"><![CDATA[ public function getTotalProducts($data = array()) 
+             { ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="catalog/model/catalog/product.php"> 
+        <operation error="skip"> 
+            <search position="replace" offset="1"><![CDATA[ public function getTotalProducts($data = array()) ]]></search> 
+            <add position="replace" offset="1"><![CDATA[ public function getTotalProducts($data = array()) { ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="catalog/model/catalog/product.php"> 
+        <operation error="skip"> 
+            <search position="replace"><![CDATA[ public function getTotalProducts($data = array()) 
+    { ]]></search> 
+            <add position="replace"><![CDATA[ public function getTotalProducts($data = array()) { ]]></add> 
+        </operation> 
+    </file> 
+ 
+    <file path="catalog/model/catalog/product.php"> 
+        <operation error="log"> 
+            <search position="after"><![CDATA[ function getTotalProducts( ]]></search> 
+            <add position="after"><![CDATA[ if (function_exists('Wdn') and ($r=Wdn(func_get_args()))>=0) return $r; // Lightning ]]></add> 
+        </operation> 
+    </file> 
+ 
+</modification> 

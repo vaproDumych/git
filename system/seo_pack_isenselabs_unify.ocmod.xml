@@ -1,0 +1,90 @@
+<modification>
+	<name>SEO Backpack by iSenseLabs (URL Unification)</name>
+	<version>2.10.1</version>
+	<link>http://isenselabs.com</link>
+	<author>iSenseLabs</author>
+	<code>isense_seo_pack_4</code>
+    	
+	<file path="catalog/controller/startup/seo_url.php">
+        <operation error="skip">
+			<search><![CDATA[
+			public function rewrite($link) {
+			]]></search>
+			<add position="after"><![CDATA[
+			// SEO Backpack Unify Script
+			$table_check = $this->db->query("SHOW TABLES LIKE '" . DB_PREFIX ."seo_module_settings'")->num_rows;
+			
+			if ($table_check) {
+                $unify_check = $this->db->query("SELECT `id` FROM `" . DB_PREFIX . "seo_module_settings` WHERE `key` = 'unify_urls' AND `value` = '1' LIMIT 1")->num_rows;
+            
+			    if ($unify_check) {
+                    $unify_check = true;
+                } else {
+                    $unify_check = false;
+                }
+			} else {
+			    $unify_check = false;
+			}
+			]]></add>
+		</operation>
+    
+    
+	    <operation error="skip">
+			<search><![CDATA[
+			$url .= '/' . $query->row['keyword'];
+			]]></search>
+			<add position="replace"><![CDATA[
+			// SEO Backpack Unify Script
+			// $url .= '/' . $query->row['keyword']; // OLD URL GENERATION
+			
+			if ($unify_check) {
+                $url = '/' . $query->row['keyword'];
+            } else {
+                $url .= '/' . $query->row['keyword'];
+            }
+			]]></add>
+		</operation>
+    </file>
+    
+    <file path="catalog/controller/common/seo_url.php">
+        <operation error="skip">
+			<search><![CDATA[
+			public function rewrite($link) {
+			]]></search>
+			<add position="after"><![CDATA[
+			// SEO Backpack Unify Script
+			$table_check = $this->db->query("SHOW TABLES LIKE '" . DB_PREFIX ."seo_module_settings'")->num_rows;
+			
+			if ($table_check) {
+                $unify_check = $this->db->query("SELECT `id` FROM `" . DB_PREFIX . "seo_module_settings` WHERE `key` = 'unify_urls' AND `value` = '1' LIMIT 1")->num_rows;
+            
+			    if ($unify_check) {
+                    $unify_check = true;
+                } else {
+                    $unify_check = false;
+                }
+			} else {
+			    $unify_check = false;
+			}
+			]]></add>
+		</operation>
+    
+    
+	    <operation error="skip">
+			<search><![CDATA[
+			$url .= '/' . $query->row['keyword'];
+			]]></search>
+			<add position="replace"><![CDATA[
+			// SEO Backpack Unify Script
+			// $url .= '/' . $query->row['keyword']; // OLD URL GENERATION
+			
+			if ($unify_check) {
+                $url = '/' . $query->row['keyword'];
+            } else {
+                $url .= '/' . $query->row['keyword'];
+            }
+			]]></add>
+		</operation>
+    </file>
+	
+</modification>

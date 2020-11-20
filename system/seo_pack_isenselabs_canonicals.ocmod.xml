@@ -1,0 +1,143 @@
+<modification>
+	<name>SEO Backpack by iSenseLabs (Canonicals)</name>
+	<version>2.10.1</version>
+	<link>http://isenselabs.com</link>
+	<author>iSenseLabs</author>
+	<code>isense_seo_pack_3</code>
+    
+    <file path="catalog/controller/product/product.php">
+        <operation error="skip">
+            <search><![CDATA[
+			$this->document->addLink($this->url->link('product/product', 'product_id=' . $this->request->get['product_id']), 'canonical');
+			]]></search>
+            <add position="replace"><![CDATA[
+                //SEO Backpack
+                $this->config->load('isenselabs/isenselabs_seo');
+                $isense_module_path = $this->config->get('isenselabs_seo_path');
+                $isense_call_model  = $this->config->get('isenselabs_seo_model');
+                $this->load->model($isense_module_path);
+
+                $canonical_check = $this->{$isense_call_model}->getSetting('canonical_products');
+
+                if ($canonical_check) {
+                    $this->document->addLink($this->url->link('product/product', 'product_id=' . $this->request->get['product_id'], true), 'canonical');
+                }
+			]]></add>
+        </operation>
+    </file>
+    
+    <file path="catalog/controller/product/category.php">
+        <operation error="skip">
+            <search><![CDATA[
+			$this->document->addLink($this->url->link('product/category', 'path=' . $category_info['category_id'], true), 'canonical');
+			]]></search>
+            <add position="replace"><![CDATA[
+                //SEO Backpack
+                $this->config->load('isenselabs/isenselabs_seo');
+                $isense_module_path = $this->config->get('isenselabs_seo_path');
+                $isense_call_model  = $this->config->get('isenselabs_seo_model');
+                $this->load->model($isense_module_path);
+
+                $canonical_check = $this->{$isense_call_model}->getSetting('canonical_categories');
+
+                if ($canonical_check) {
+                    $this->document->addLink($this->url->link('product/category', 'path=' . $category_info['category_id'], true), 'canonical');
+                }
+			]]></add>
+        </operation>
+    </file>
+    
+    <file path="catalog/controller/product/manufacturer.php">
+        <operation error="skip">
+            <search><![CDATA[
+			$this->document->addLink($this->url->link('product/manufacturer/info', 'manufacturer_id=' . $this->request->get['manufacturer_id'], true), 'canonical');
+			]]></search>
+            <add position="replace"><![CDATA[
+                //SEO Backpack
+                $this->config->load('isenselabs/isenselabs_seo');
+                $isense_module_path = $this->config->get('isenselabs_seo_path');
+                $isense_call_model  = $this->config->get('isenselabs_seo_model');
+                $this->load->model($isense_module_path);
+
+                $canonical_check = $this->{$isense_call_model}->getSetting('canonical_manufacturers');
+
+                if ($canonical_check) {
+                    $this->document->addLink($this->url->link('product/manufacturer/info', 'manufacturer_id=' . $this->request->get['manufacturer_id'], true), 'canonical');
+                }
+			]]></add>
+        </operation>
+    </file>
+    
+    <file path="catalog/controller/information/information.php">
+        <operation error="skip">
+            <search><![CDATA[
+			$this->document->setTitle($information_info['meta_title']);
+			]]></search>
+            <add position="after"><![CDATA[
+                //SEO Backpack
+                $this->config->load('isenselabs/isenselabs_seo');
+                $isense_module_path = $this->config->get('isenselabs_seo_path');
+                $isense_call_model  = $this->config->get('isenselabs_seo_model');
+                $this->load->model($isense_module_path);
+
+                $canonical_check = $this->{$isense_call_model}->getSetting('canonical_information_pages');
+
+                if ($canonical_check) {
+                    $this->document->addLink($this->url->link('information/information', 'information_id=' .  $information_id, true), 'canonical');
+                }
+			]]></add>
+        </operation>
+    </file>
+    
+    <file path="catalog/controller/product/special.php">
+        <operation error="skip">
+            <search><![CDATA[
+			$this->document->addLink($this->url->link('product/special', '', true), 'canonical');
+			]]></search>
+            <add position="replace"><![CDATA[
+                //SEO Backpack
+                $this->config->load('isenselabs/isenselabs_seo');
+                $isense_module_path = $this->config->get('isenselabs_seo_path');
+                $isense_call_model  = $this->config->get('isenselabs_seo_model');
+                $this->load->model($isense_module_path);
+
+                $canonical_check = $this->{$isense_call_model}->getSetting('canonical_special_page');
+
+                if ($canonical_check) {
+                    $this->document->addLink($this->url->link('product/special', '', true), 'canonical');
+                }
+			]]></add>
+        </operation>
+    </file>
+    
+    <file path="catalog/controller/common/home.php">
+        <operation error="skip">
+            <search><![CDATA[
+			$this->document->addLink($this->config->get('config_url'), 'canonical');
+			]]></search>
+            <add position="replace"><![CDATA[
+               //$this->document->addLink($this->config->get('config_url'), 'canonical');
+			]]></add>
+        </operation>
+        
+         <operation error="skip">
+            <search><![CDATA[
+			$data['column_left'] = $this->load->controller('common/column_left');
+			]]></search>
+            <add position="before"><![CDATA[
+                //SEO Backpack
+                $this->config->load('isenselabs/isenselabs_seo');
+                $isense_module_path = $this->config->get('isenselabs_seo_path');
+                $isense_call_model  = $this->config->get('isenselabs_seo_model');
+                $this->load->model($isense_module_path);
+
+                $canonical_check = $this->{$isense_call_model}->getSetting('canonical_home_page');
+
+                if ($canonical_check) {
+                    $this->document->addLink($this->url->link('common/home', '', true), 'canonical');
+                }
+			]]></add>
+        </operation>
+    </file>
+      
+</modification>

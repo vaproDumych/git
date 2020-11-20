@@ -1,0 +1,22 @@
+<modification> 
+<id>GCRdev sitemap</id> 
+<version>1.1</version> 
+<vqmver>2.0</vqmver> 
+<author>Pradeep Nair (pnair39@gmail.com)</author> 
+<link>mailto:pnair39@gmail.com</link> 
+<file path="admin/controller/common/column_left.php"> 
+<operation error="skip"> 
+<search><![CDATA[if ($extension) {]]></search> 
+<add position="before"><![CDATA[ 
+if ($this->user->hasPermission('access', 'extension/feed/gcrdev_sitemap')) { 
+$extension[] = array( 
+'name'	=> "GCRdev sitemap", 
+'href' => $this->url->link('extension/feed/gcrdev_sitemap', 'token=' . $this->session->data['token'], true), 
+'children' => array() 
+); 
+} 
+]]></add> 
+</operation> 
+</file> 
+
+</modification>

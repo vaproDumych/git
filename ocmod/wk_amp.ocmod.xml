@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+
+  <name>Webkul Accelerated Mobile Pages</name>
+  <version>2.3.0.0</version>
+  <code>Webkul Accelerated Mobile Pages</code>
+  <author>Webkul</author>
+  <link>http://webkul.com</link>
+
+  <file path="catalog/controller/common/header.php">
+    <operation>
+      <search><![CDATA[
+        $data['title'] = $this->document->getTitle();
+      ]]></search>
+      <add position="after"><![CDATA[
+        $data['wk_amp_status'] = false;
+        if($this->config->get('wk_amp_status')) {
+          $data['wk_amp_status'] = true;
+          if(isset($this->request->get['product_id']) && $this->request->get['product_id']) {
+            $data['product_id'] = $this->request->get['product_id'];
+            $data['amp_url'] = $this->url->link('product/amp_product', '&product_id=' . $data['product_id'], 'SSL');
+          } else if(isset($this->request->get['path']) && $this->request->get['path']) {
+            $data['path'] = $this->request->get['path'];
+            $data['amp_url'] = $this->url->link('product/amp_category', '&path=' . $data['path'], 'SSL');
+          } else if((isset($this->request->get['route']) && $this->request->get['route'] == "common/home") || !isset($this->request->get['route'])) {
+            $data['amp_url'] = $this->url->link('common/amp_home', '', 'SSL');
+          }
+        }
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/view/theme/*/template/common/header.tpl">
+    <operation>
+      <search><![CDATA[
+        </head>
+      ]]></search>
+      <add position="before"><![CDATA[
+        <?php if($wk_amp_status && isset($amp_url) && $amp_url) { ?>
+          <link rel="amphtml" href="<?php echo $amp_url; ?>" />
+        <?php } ?>
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/controller/startup/seo_url.php">
+    <operation>
+      <search><![CDATA[
+        $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "url_alias WHERE `query` = '" . $this->db->escape($key . '=' . (int)$value) . "'");
+      ]]></search>
+      <add position="after" offset="4"><![CDATA[
+        /*Amp code*/
+          if($data['route'] == 'product/amp_product') {
+            $url .= '/amp';
+          }
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[
+        } elseif ($key == 'path') {
+      ]]></search>
+      <add position="replace"><![CDATA[
+        } else if($data['route'] == 'common/amp_home') {
+            $url .= '/home/amp';
+            unset($data[$key]);
+        } elseif ($key == 'path') {
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[
+        foreach ($categories as $category) {
+      ]]></search>
+      <add position="after" offset="10"><![CDATA[
+        if($data['route'] == 'product/amp_category') {
+          $url .= '/amp';
+        }
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[
+        foreach ($parts as $part) {
+      ]]></search>
+      <add position="before"><![CDATA[
+        /*Amp code*/
+        $temp = false;
+        $ampHome = false;
+        if(in_array('amp', $parts)) {
+          unset($parts[array_search("amp",$parts)]);
+          $temp = true;
+          if(isset($parts[0]) && $parts[0] == 'home') {
+            $ampHome = true;
+          }
+        }
+        /*end here*/
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[
+        if (!isset($this->request->get['route'])) {
+      ]]></search>
+      <add position="after"><![CDATA[
+        /*Amp code*/
+        if (isset($this->request->get['path']) && isset($temp) && $temp) {
+          $this->request->get['route'] = 'product/amp_category';
+          /*end here*/
+        } else if (isset($this->request->get['product_id']) && isset($temp) && $temp) {
+          $this->request->get['route'] = 'product/amp_product';
+          /*end here*/
+        } else
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[
+        $this->request->get['route'] = 'error/not_found';
+      ]]></search>
+      <add position="before" offset="1" ><![CDATA[
+        } else if (isset($ampHome) && $ampHome) {
+                  $this->request->get['route'] = 'common/amp_home';
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[
+        if (($data['route'] == 'product/product' && $key == 'product_id') || (($data['route'] == 'product/manufacturer/info' || $data['route'] == 'product/product') && $key == 'manufacturer_id') || ($data['route'] == 'information/information' && $key == 'information_id')) {
+      ]]></search>
+      <add position="replace"><![CDATA[
+        if (($data['route'] == 'product/product' && $key == 'product_id') || (($data['route'] == 'product/manufacturer/info' || $data['route'] == 'product/product') && $key == 'manufacturer_id') || ($data['route'] == 'information/information' && $key == 'information_id')  || ($data['route'] == 'product/amp_product' && $key == 'product_id') ) {
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[
+        public function index() {
+      ]]></search>
+      <add position="after"><![CDATA[
+        if (isset($this->request->get['amp_search'])) {
+          $this->response->redirect($this->url->link('product/amp_search','&search=' .$this->request->get['amp_search'] ,true));
+        }
+      ]]></add>
+    </operation>
+  </file>
+
+  <file path="catalog/controller/common/seo_url.php">
+    <operation>
+      <search><![CDATA[
+        $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "url_alias WHERE `query` = '" . $this->db->escape($key . '=' . (int)$value) . "'");
+      ]]></search>
+      <add position="after" offset="4"><![CDATA[
+        /*Amp code*/
+          if($data['route'] == 'product/amp_product') {
+            $url .= '/amp';
+          }
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[
+        } elseif ($key == 'path') {
+      ]]></search>
+      <add position="replace"><![CDATA[
+        } else if($data['route'] == 'common/amp_home') {
+            $url .= '/home/amp';
+            unset($data[$key]);
+        } elseif ($key == 'path') {
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[
+        foreach ($categories as $category) {
+      ]]></search>
+      <add position="after" offset="10"><![CDATA[
+        if($data['route'] == 'product/amp_category') {
+          $url .= '/amp';
+        }
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[
+        foreach ($parts as $part) {
+      ]]></search>
+      <add position="before"><![CDATA[
+        /*Amp code*/
+        $temp = false;
+        $ampHome = false;
+        if(in_array('amp', $parts)) {
+          unset($parts[array_search("amp",$parts)]);
+          $temp = true;
+          if(isset($parts[0]) && $parts[0] == 'home') {
+            $ampHome = true;
+          }
+        }
+        /*end here*/
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[
+        if (!isset($this->request->get['route'])) {
+      ]]></search>
+      <add position="after"><![CDATA[
+        /*Amp code*/
+        if (isset($this->request->get['path']) && isset($temp) && $temp) {
+          $this->request->get['route'] = 'product/amp_category';
+          /*end here*/
+        } else if (isset($this->request->get['product_id']) && isset($temp) && $temp) {
+          $this->request->get['route'] = 'product/amp_product';
+          /*end here*/
+        } else
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[
+        $this->request->get['route'] = 'error/not_found';
+      ]]></search>
+      <add position="before" offset="1" ><![CDATA[
+        } else if (isset($ampHome) && $ampHome) {
+                  $this->request->get['route'] = 'common/amp_home';
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[
+        if (($data['route'] == 'product/product' && $key == 'product_id') || (($data['route'] == 'product/manufacturer/info' || $data['route'] == 'product/product') && $key == 'manufacturer_id') || ($data['route'] == 'information/information' && $key == 'information_id')) {
+      ]]></search>
+      <add position="replace"><![CDATA[
+        if (($data['route'] == 'product/product' && $key == 'product_id') || (($data['route'] == 'product/manufacturer/info' || $data['route'] == 'product/product') && $key == 'manufacturer_id') || ($data['route'] == 'information/information' && $key == 'information_id')  || ($data['route'] == 'product/amp_product' && $key == 'product_id') ) {
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[
+        public function index() {
+      ]]></search>
+      <add position="after"><![CDATA[
+        if (isset($this->request->get['amp_search'])) {
+          $this->response->redirect($this->url->link('product/amp_search','&search=' .$this->request->get['amp_search'] ,true));
+        }
+      ]]></add>
+    </operation>
+
+  </file>
+
+  <file path="admin/controller/extension/extension/module.php">
+      <operation>
+          <search><![CDATA[$this->load->controller('extension/module/' . $this->request->get['extension'] . '/install');]]></search>
+          <add position="before"><![CDATA[
+              $this->load->controller('module/' . $this->request->get['extension'] . '/install');
+          ]]></add>
+      </operation>
+      <operation>
+          <search><![CDATA[$this->load->controller('extension/module/' . $this->request->get['extension'] . '/uninstall');]]></search>
+          <add position="before"><![CDATA[
+              $this->load->controller('module/' . $this->request->get['extension'] . '/uninstall');
+          ]]></add>
+      </operation>
+      <operation>
+          <search><![CDATA['name'      => $this->language->get('heading_title'),]]></search>
+          <add position="after"><![CDATA[
+              'file_name'      => $extension,
+          ]]></add>
+      </operation>
+      <operation>
+          <search><![CDATA[$this->response->setOutput($this->load->view('extension/extension/module]]></search>
+          <add position="before"><![CDATA[
+            foreach ($data['extensions'] as $key => $value) {
+              if (isset($value['file_name']) && $value['file_name'] == 'wk_amp') {
+                $data['extensions'][$key]['edit'] = $this->url->link('module/wk_amp', 'token=' . $this->session->data['token'], true);
+              }
+            }
+          ]]></add>
+      </operation>
+  </file>
+
+</modification>

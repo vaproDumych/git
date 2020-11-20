@@ -1,0 +1,25 @@
+User-agent: *
+# === Lightning code start
+Disallow: /*li_op=
+Disallow: /*tag=
+Disallow: /*search=
+Disallow: /*manufacturer_id=
+Disallow: /*sort=
+Disallow: /*order=
+Disallow: /*limit=
+Disallow: /*filter_name=
+Disallow: /*filter_sub_category=
+Disallow: /*filter_description=
+# === Lightning code end
+
+
+Disallow: /admin
+Disallow: /*route=product/search
+Disallow: /*route=checkout/
+Disallow: /*route=account/
+Disallow: /*sort=
+Disallow: /*order=
+Disallow: /*limit=
+Disallow: /*page=
+Disallow: /*filter_name=
+Disallow: /*filter_description=

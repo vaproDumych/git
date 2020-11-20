@@ -1,0 +1,95 @@
+<modification>
+	<name>SEO Backpack by iSenseLabs (Breadcrumbs)</name>
+	<version>2.10.1</version>
+	<link>http://isenselabs.com</link>
+	<author>iSenseLabs</author>
+	<code>isense_seo_pack_5</code>
+    	
+	<file path="catalog/controller/product/category.php">
+        <operation error="skip">
+			<search><![CDATA[
+			$category_info = $this->model_catalog_category->getCategory($category_id);
+			]]></search>
+			<add position="after"><![CDATA[			
+			// SEO Backpack Unify Script
+			// iSense SEO Module Loader
+            $this->config->load('isenselabs/isenselabs_seo');
+            $isense_module_path = $this->config->get('isenselabs_seo_path');
+            $isense_call_model  = $this->config->get('isenselabs_seo_model');
+            $this->load->model($isense_module_path);
+            
+            $breadcrumb_check = $this->{$isense_call_model}->getSetting('breadcrumb_categories');
+            
+            if ($category_info && $breadcrumb_check) {
+                $cats = $this->{$isense_call_model}->getPathCategoryPage($category_id);
+                $path = '';
+                $parts = explode('_', (string)$cats);
+                foreach ($parts as $path_id) {
+                    $cat_info = $this->model_catalog_category->getCategory($path_id);
+                    if (isset($cat_info) && $cat_info['category_id']!= $category_id) {
+                        $data['breadcrumbs'][] = array(
+                            'text'      => $cat_info['name'],
+                            'href'      => $this->url->link('product/category', 'path=' . $cat_info['category_id']),
+                            'separator' => $this->language->get('text_separator')
+                        );
+                    }
+                }
+            }
+			]]></add>
+		</operation>	  
+	</file>
+	
+	<file path="catalog/controller/product/product.php">
+        <operation error="skip">
+			<search><![CDATA[
+			if ($product_info) {
+			]]></search>
+			<add position="after"><![CDATA[			
+			// SEO Backpack Unify Script
+			// iSense SEO Module Loader
+            $this->config->load('isenselabs/isenselabs_seo');
+            $isense_module_path = $this->config->get('isenselabs_seo_path');
+            $isense_call_model  = $this->config->get('isenselabs_seo_model');
+            $this->load->model($isense_module_path);
+            
+            $breadcrumb_check = $this->{$isense_call_model}->getSetting('breadcrumb_products');
+            
+            if(!isset($category_info) && $breadcrumb_check) {
+                $categories = $this->{$isense_call_model}->getCategoriesByProductId($this->request->get['product_id']);
+                if ($categories) {
+                    foreach($categories as $category) {
+                        $path = $this->{$isense_call_model}->getPathCategoryPage($category['category_id']);
+                        $category_info = $this->model_catalog_category->getCategory($category['category_id']);
+                        if ($path) {
+                            $cat_path = $path;
+                        } else {
+                            $cat_path = $category_info['category_id'];
+                        }
+
+                        if ($category_info) {
+                            $path = '';
+
+                            foreach (explode('_', $cat_path) as $path_id) {
+                                $path = $path_id;
+
+                                $category_info = $this->model_catalog_category->getCategory($path_id);
+
+                                if ($category_info) {
+                                    $data['breadcrumbs'][] = array(
+                                      'text'      => $category_info['name'],
+                                      'href'      => $this->url->link('product/category', '&path=' . $path, 'SSL'),
+                                      'separator' => $this->language->get('text_separator')
+                                    );
+                                }
+                            }
+                            break;
+                        }
+
+                    }
+                }
+            }
+			]]></add>
+		</operation>	  
+	</file>
+	
+</modification>
